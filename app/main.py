@@ -9,8 +9,11 @@ import requests
 # .env
 from dotenv import load_dotenv
 import cozmo
-from app.cozmo.cozmo_speak import cozmo_speak
+from app.cozmo.cozmo_speak import cozmo_speaks
+from app.cozmo.random_animation import random_animation
 import os
+from app.graphql.type_defs import type_defs
+from app.graphql.query.query import query
 
 
 # Load environment variables
@@ -70,31 +73,6 @@ def getClient():
             client.inject_token('Bearer '+token)
         return client
     return buildClient()
-
-
-# Define types using Schema Definition Language (https://graphql.org/learn/schema/)
-# Wrapping string in gql function provides validation and better error traceback
-type_defs = gql("""
-    input CozmoSpeakInput {
-        id: ID!
-        sentence: String!
-    }
-
-     type Query {
-        cozmoSpeak(input: CozmoSpeakInput): String
-    }
-""")
-
-# Map resolver functions to Query fields using QueryType
-query = QueryType()
-
-# Resolvers are simple python functions
-@query.field("cozmoSpeak")
-def resolve_cozmo_speak(*_, input):
-
-    cozmo_speak(input['sentence'])
-
-    return input['sentence']
 
 
 # Create executable GraphQL schema

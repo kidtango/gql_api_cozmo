@@ -22,7 +22,7 @@ Make Cozmo say 'Hello World' in this simple Cozmo SDK example program.
 import cozmo
 
 
-def cozmo_speak(saying):
+def cozmo_speaks(saying):
     def cozmo_program(robot: cozmo.robot.Robot):
         robot.say_text(saying).wait_for_completed()
 
